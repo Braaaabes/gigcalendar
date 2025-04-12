@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buff's Show Calendar</title>
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #2c2c2c;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    #calendar {
+      max-width: 1000px;
+      margin: 2rem auto;
+      background-color: #2b2b2b;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    .fc-daygrid-event {
+      font-size: 0.8rem;
+    }
+    @media print {
+      body {
+        background-color: white;
+        color: black;
+      }
+      header, .fc-toolbar {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>🎭 Buff's Show Calendar</header>
+  <div id='calendar'></div>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,listWeek'
+        },
+        eventClick: function(info) {
+          alert(
+            `${info.event.title}\n\n` +
+            `${info.event.extendedProps.description || ''}`
+          );
+        },
+        events: [
+          {
+            title: '🎤 Bluesfest – Black Box 0m',
+            start: '2025-04-24',
+            description: '🕒 Start: 07:00\n👤 LD: Chris Smith\n🧑‍🔧 Crew IN: Jess, Marco\n🧑‍🔧 Crew OUT: Jess, Alex\n📝 Notes: Confirm hires before bump-in.'
+          },
+          {
+            title: '🎭 Indie Show – Blonde 2m',
+            start: '2025-04-25',
+            description: '🕒 Start: 15:00\n👤 LD: Taylor Blue\n🧑‍🔧 Crew IN: Kim, Drew\n🧑‍🔧 Crew OUT: Sam, Drew\n📝 Notes: Bring spare console cable.'
+          },
+          {
+            title: '🎸 Support Band – Black Box 1m',
+            start: '2025-04-25',
+            description: '🕒 Start: 11:00\n👤 LD: N/A\n🧑‍🔧 Crew IN: Tom\n🧑‍🔧 Crew OUT: Tom\n📝 Notes: Tight turnaround with main act.'
+          }
+        ]
+      });
+      calendar.render();
+    });
+  </script>
+</body>
+</html>

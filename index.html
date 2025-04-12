@@ -3,63 +3,78 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gig Calendar</title>
+  <title>📅 Buff's Gig Calendar</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: #eee;
-      margin: 0;
-      padding: 20px;
+      background-color: #1a1a1a;
+      color: #f5f5f5;
+      font-family: sans-serif;
+      padding: 2rem;
     }
-
     h1 {
-      text-align: center;
-      color: #fff;
-      font-size: 2rem;
-      margin-bottom: 20px;
+      color: #f5f5f5;
+      margin-bottom: 1rem;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
-      background: #222;
+      margin-top: 1rem;
     }
-
     th, td {
+      padding: 0.75rem;
       border: 1px solid #444;
-      padding: 10px;
       text-align: left;
     }
-
     th {
-      background-color: #333;
-      color: #fff;
+      background-color: #2d2d2d;
     }
-
     tr:nth-child(even) {
-      background-color: #1c1c1c;
+      background-color: #222;
     }
-
-    @media print {
-      body {
-        background-color: white;
-        color: black;
-      }
-      table {
-        background: white;
-      }
-      th {
-        background-color: #ccc;
-        color: black;
-      }
+    tr:hover {
+      background-color: #333;
     }
   </style>
 </head>
 <body>
-  <h1>Gig Calendar</h1>
-  <div id="calendarContainer">
-    <p>Calendar will be generated here once we finish the data link setup.</p>
-  </div>
+  <h1>📅 Buff's Gig Calendar</h1>
+  <table id="calendar">
+    <thead>
+      <tr>
+        <th>Show Title</th>
+        <th>Date</th>
+        <th>Lighting Designer</th>
+        <th>State of Hall (Gig)</th>
+        <th>Start Time</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    fetch('show-deets.csv')
+      .then(res => res.text())
+      .then(csv => {
+        const rows = csv.trim().split('\n').slice(1); // skip header
+        const tableBody = document.querySelector('#calendar tbody');
+
+        rows.forEach(row => {
+          const cols = row.split(',');
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${cols[0]}</td>
+            <td>${cols[1]}</td>
+            <td>${cols[2]}</td>
+            <td>${cols[4]}</td>
+            <td>${cols[14] || '–'}</td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        document.body.innerHTML += `<p style="color:red;">Failed to load calendar data.</p>`;
+        console.error(err);
+      });
+  </script>
 </body>
 </html>

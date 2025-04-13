@@ -37,9 +37,18 @@
           const events = lines.slice(1).map(line => {
             const fields = line.split(',');
             const title = fields[titleIdx]?.trim().replace(/^"|"$/g, '');
-            const rawDate = fields[dateIdx]?.trim().replace(/^"|"$/g, '');
-            const start = Date.parse(rawDate) ? new Date(rawDate).toISOString().split('T')[0] : null;
-            if (!start || !title || title.startsWith('#')) return null;
+
+            let rawDate = fields[dateIdx]?.trim().replace(/^"|"$/g, '');
+            if (!title || title.startsWith('#') || !rawDate) return null;
+
+            // Extract first valid date using regex (e.g., "April 22, 2025 → April 23, 2025")
+            const match = rawDate.match(/\b\w+ \d{1,2}, \d{4}\b/);
+            if (!match) return null;
+
+            const parsedDate = new Date(match[0]);
+            if (isNaN(parsedDate)) return null;
+
+            const start = parsedDate.toISOString().split('T')[0];
             return { title, start };
           }).filter(e => e);
 

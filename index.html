@@ -52,7 +52,7 @@
   </table>
 
   <script>
-    fetch('https://raw.githubusercontent.com/Braaabes/gigcalendar/main/show-deets.csv')
+    fetch('show-deets.csv')
       .then(res => res.text())
       .then(csv => {
         const rows = csv.trim().split('\n').slice(1); // skip header
